@@ -1,0 +1,22 @@
+{
+    "name": "iconic/engine",
+    "description": "Engine is a workflow state machine that helps keeping business logic centralized",
+    "license": "MIT",
+    "type": "library",
+    "require-dev": {
+        "behat/behat": "^3.8",
+        "phpunit/phpunit": "^9.4",
+        "symfony/var-dumper": "^5.2"
+    },
+    "authors": [
+        {
+            "name": "Dimitris Kastaniotis",
+            "email": "dimkasta@yahoo.gr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Iconic\\Engine\\": "src"
+        }
+    }
+}
