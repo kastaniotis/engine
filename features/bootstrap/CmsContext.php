@@ -3,6 +3,8 @@
 use Behat\Behat\Context\Context;
 use Iconic\Engine\Engine;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertTrue;
 
 class CmsContext implements Context
 {
@@ -28,7 +30,7 @@ class CmsContext implements Context
     {
         $object = new StdClass();
         $object->$parameter = $value;
-        $this->engine->can($action, $object);
+        assertTrue($this->engine->can($action, $object));
     }
 
     /**
@@ -38,12 +40,8 @@ class CmsContext implements Context
     {
         $object = new StdClass();
         $object->$parameter = $value;
-        try {
-            $this->engine->can($action, $object);
-        }
-        catch (Exception $exception){
-            assertEquals("The transition '$action' cannot be applied for objects with a '$parameter' '$value'. Expected: '$parameter' is 'published'", $exception->getMessage());
-        }
+
+        assertFalse($this->engine->can($action, $object));
     }
 
     /**
@@ -59,18 +57,13 @@ class CmsContext implements Context
      */
     public function notEveryoneCanObjects($action)
     {
-        try {
-            $this->engine->can($action);
-        }
-        catch (Exception $exception){
-            assertEquals("Only specific actors are allowed action $action", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action));
     }
 
     /**
      * @Given /^users with "([^"]*)" "([^"]*)" can "([^"]*)" objects$/
      */
-    public function usersWithCanObjects($parameter, $value,$action)
+    public function usersWithCanObjects($parameter, $value, $action)
     {
         $actor = new StdClass();
         $actor->$parameter = $value;
@@ -80,15 +73,10 @@ class CmsContext implements Context
     /**
      * @Given /^users with "([^"]*)" "([^"]*)" cannot "([^"]*)" objects$/
      */
-    public function usersWithCannotObjects($parameter, $value,$action)
+    public function usersWithCannotObjects($parameter, $value, $action)
     {
         $actor = new StdClass();
         $actor->$parameter = $value;
-        try {
-            $this->engine->can($action, null, $actor);
-        }
-        catch (Exception $exception){
-            assertEquals("The action '$action' cannot be applied by '$parameter': '$value'. Expected: 'editor'", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action, null, $actor));
     }
 }
