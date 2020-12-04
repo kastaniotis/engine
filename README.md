@@ -1,4 +1,4 @@
-# Engine Workflow library
+# Engine - PHP Workflow library
 
 Engine is heavily inspired by symfony/workflow, but meant to be 
 significantly simpler to use, and allow extra checks

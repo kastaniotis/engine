@@ -112,4 +112,6 @@ class Engine
             }
         }
     }
+
+    //TODO: Allow accessing properties using getters too
 }
