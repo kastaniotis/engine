@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Iconic\Engine\Exception;
 
 class ObjectParameterValueRequiredException extends WorkflowException

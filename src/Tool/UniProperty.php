@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Iconic\Tool;
 
-
+use Iconic\Engine\Exception\ObjectParameterRequiredException;
 
 class UniProperty
 {
@@ -17,12 +16,11 @@ class UniProperty
             return $subject->{$method}();
         }
 
-        if(property_exists($subject, $propertyName)){
+        if (property_exists($subject, $propertyName)) {
             return $subject->$propertyName;
         }
 
-        $class = get_class($subject);
-        throw new \Exception("The property '$propertyName' does not exist on '$class'.");
+        throw new ObjectParameterRequiredException('$propertyName');
     }
 
     public static function set(object $subject, string $propertyName, string $propertyValue)
@@ -32,11 +30,13 @@ class UniProperty
 
         if (method_exists($subject, $method)) {
             $subject->{$method}($propertyValue);
+
             return;
         }
 
-        if(property_exists($subject, $propertyName)){
+        if (property_exists($subject, $propertyName)) {
             $subject->$propertyName = $propertyValue;
+
             return;
         }
 

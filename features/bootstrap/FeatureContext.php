@@ -152,7 +152,7 @@ class FeatureContext implements Context
     public function theApplicationIsNotAllowedTheActionWithoutAnActor($action)
     {
         $object = new StdClass();
-        $object->status = "draft";
+        $object->status = 'draft';
         assertFalse($this->engine->can($action, $object));
     }
 
@@ -162,7 +162,7 @@ class FeatureContext implements Context
     public function theApplicationIsNotAllowedTheActionWithoutAnActorThatHasTheParameter($action, $parameter)
     {
         $object = new StdClass();
-        $object->status = "draft";
+        $object->status = 'draft';
         $actor = new StdClass();
         assertFalse($this->engine->can($action, $object, $actor));
     }
@@ -173,9 +173,9 @@ class FeatureContext implements Context
     public function theApplicationIsNotAllowedTheActionWithoutAnActorWithThe($action, $parameter, $value)
     {
         $object = new StdClass();
-        $object->status = "draft";
+        $object->status = 'draft';
         $actor = new StdClass();
-        $actor->$parameter = "wrong";
+        $actor->$parameter = 'wrong';
         assertFalse($this->engine->can($action, $object, $actor));
     }
 
@@ -185,7 +185,7 @@ class FeatureContext implements Context
     public function theApplicationIsAllowedTheActionWithAnActorWithThe($action, $parameter, $value)
     {
         $object = new StdClass();
-        $object->status = "draft";
+        $object->status = 'draft';
         $actor = new StdClass();
         $actor->$parameter = $value;
         assertTrue($this->engine->can($action, $object, $actor));
@@ -197,7 +197,7 @@ class FeatureContext implements Context
     public function theApplicationCanApplyTheActionWithAnActorWithThe($action, $parameter, $value)
     {
         $object = new StdClass();
-        $object->status = "draft";
+        $object->status = 'draft';
         $actor = new StdClass();
         $actor->$parameter = $value;
         $this->engine->apply($action, $object, $actor);
@@ -237,13 +237,42 @@ class FeatureContext implements Context
         //TODO: Move this into its own project
 
         $test = new StdClass();
-        $test->status = "draft";
+        $test->status = 'draft';
 
         dump(\Iconic\Tool\UniProperty::get($test, 'status'));
 //        dump(\Iconic\Tool\UniProperty::get($test, 'nothing'));
         \Iconic\Tool\UniProperty::set($test, 'status', 'published');
         dump(\Iconic\Tool\UniProperty::get($test, 'status'));
-        \Iconic\Tool\UniProperty::set($test, 'test', 'published');
+//        \Iconic\Tool\UniProperty::set($test, 'test', 'published');
+    }
 
+    /**
+     * @Given /^action "([^"]*)" allows the transition of parameter "([^"]*)" from "([^"]*)" to "([^"]*)" through getters and setters$/
+     */
+    public function actionAllowsTheTransitionOfParameterFromToThroughGettersAndSetters($action, $parameter, $from, $to)
+    {
+        $this->engine->allow($action)->of($parameter, $from, $to);
+    }
+
+    /**
+     * @Then /^the application should be able to read that for action "([^"]*)" the "([^"]*)" is "([^"]*)"$/
+     */
+    public function theApplicationShouldBeAbleToReadThatTheIs($action, $parameter, $from)
+    {
+        $post = new \Iconic\Engine\Test\Post($from);
+
+        assertTrue($this->engine->can($action, $post));
+    }
+
+    /**
+     * @Given /^should be able to change the "([^"]*)" from "([^"]*)" to "([^"]*)" if it applies the action "([^"]*)"$/
+     */
+    public function shouldBeAbleToChangeTheFromToIfItAppliesTheAction($parameter, $from, $to, $action)
+    {
+        $post = new \Iconic\Engine\Test\Post($from);
+        assertEquals($from, \Iconic\Tool\UniProperty::get($post, $parameter));
+
+        $this->engine->apply($action, $post);
+        assertEquals($to, \Iconic\Tool\UniProperty::get($post, $parameter));
     }
 }

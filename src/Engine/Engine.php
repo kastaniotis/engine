@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Iconic\Engine;
-
 
 use Iconic\Engine\Exception\ActionException;
 use Iconic\Engine\Exception\ActorParameterRequiredException;
 use Iconic\Engine\Exception\ActorParameterValueRequiredException;
 use Iconic\Engine\Exception\ActorRequiredException;
-use Iconic\Engine\Exception\ObjectParameterRequiredException;
 use Iconic\Engine\Exception\ObjectParameterValueRequiredException;
 use Iconic\Engine\Exception\ObjectRequiredException;
 use Iconic\Engine\Exception\WorkflowException;
+use Iconic\Tool\UniProperty;
 
 class Engine
 {
@@ -29,7 +27,7 @@ class Engine
 
     public function allow(string $action)
     {
-        if(! key_exists($action, $this->actions)){
+        if (!key_exists($action, $this->actions)) {
             $this->actions[$action] = new Action($action);
         }
 
@@ -40,9 +38,9 @@ class Engine
     {
         try {
             $this->check($actionName, $object, $actor);
+
             return true;
-        }
-        catch (WorkflowException $exception){
+        } catch (WorkflowException $exception) {
             return false;
         }
     }
@@ -51,7 +49,7 @@ class Engine
     {
         $this->check($name, $object, $actor);
 
-        if(null === $object){
+        if (null === $object) {
             throw new ObjectRequiredException($name);
         }
 
@@ -60,58 +58,53 @@ class Engine
         $subject = $action->transition->subject;
         $value = $action->transition->final;
 
-        $object->$subject = $value;
+        UniProperty::set($object, $subject, $value);
     }
 
     private function check(string $actionName, $object = null, $actor = null)
     {
-        if(! key_exists($actionName, $this->actions)){
+        if (!key_exists($actionName, $this->actions)) {
             throw new ActionException($actionName);
         }
 
         /** @var Action $action */
         $action = $this->actions[$actionName];
 
-        if($action->transition !== null){
-            if($object === null) {
+        if (null !== $action->transition) {
+            if (null === $object) {
                 throw new ObjectRequiredException($actionName);
             }
 
             $subject = $action->transition->subject;
             $expected = $action->transition->initial;
 
-            if(! property_exists($object, $subject))
-            {
-                throw new ObjectParameterRequiredException($subject);
-            }
+            $actualSubject = UniProperty::get($object, $subject);
 
-            $actualSubject = $object->$subject;
-
-            if($actualSubject !== $expected){
+            if ($actualSubject !== $expected) {
                 throw new ObjectParameterValueRequiredException($actionName, $subject, $actualSubject, $expected);
             }
         }
 
-        if($action->gate !== null){
-            if($actor === null) {
+        if (null !== $action->gate) {
+            if (null === $actor) {
                 throw new ActorRequiredException("$actionName");
             }
 
             $actorParameter = $action->gate->name;
             $expected = $action->gate->value;
 
-            if(! property_exists($actor, $actorParameter))
-            {
+            if (!property_exists($actor, $actorParameter)) {
                 throw new ActorParameterRequiredException($actionName, $actorParameter);
             }
 
             $actorParameterValue = $actor->$actorParameter;
 
-            if($actorParameterValue !== $expected){
+            if ($actorParameterValue !== $expected) {
                 throw new ActorParameterValueRequiredException($actionName, $actorParameter, $actorParameterValue, $expected);
             }
         }
     }
 
-    //TODO: Allow accessing properties using getters too
+    //TODO: Allow accessing properties using getters. And add some tests.
+    //TODO: Move Uniproperty to its own project
 }

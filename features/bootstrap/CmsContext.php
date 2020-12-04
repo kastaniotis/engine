@@ -2,7 +2,6 @@
 
 use Behat\Behat\Context\Context;
 use Iconic\Engine\Engine;
-use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 

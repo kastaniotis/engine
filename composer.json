@@ -9,7 +9,8 @@
     "require-dev": {
         "behat/behat": "^3.8",
         "phpunit/phpunit": "^9.4",
-        "symfony/var-dumper": "^5.2"
+        "symfony/var-dumper": "^5.2",
+        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "authors": [
         {

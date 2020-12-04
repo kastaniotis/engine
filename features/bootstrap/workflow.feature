@@ -35,3 +35,7 @@ Feature: Workflow
     And the application is allowed the "publish" action with an actor with the "role" "publisher" and without an object
     And the application cannot apply the "publish" action with an actor with the "role" "publisher" and without an object
 
+  Scenario: Allow application to access parameters of subjects with getters and setters
+    Given action "publish" allows the transition of parameter "status" from "draft" to "published" through getters and setters
+    Then the application should be able to read that for action "publish" the "status" is "draft"
+    And should be able to change the "status" from "draft" to "published" if it applies the action "publish"

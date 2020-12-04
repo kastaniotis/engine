@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Iconic\Engine;
-
 
 class Gate
 {
@@ -14,5 +12,4 @@ class Gate
         $this->name = $name;
         $this->value = $value;
     }
-
 }

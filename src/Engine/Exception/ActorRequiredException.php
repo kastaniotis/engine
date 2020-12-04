@@ -1,10 +1,6 @@
 <?php
 
-
 namespace Iconic\Engine\Exception;
-
-
-use Throwable;
 
 class ActorRequiredException extends WorkflowException
 {
