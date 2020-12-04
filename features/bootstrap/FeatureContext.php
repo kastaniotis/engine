@@ -236,13 +236,13 @@ class FeatureContext implements Context
 
         //TODO: Move this into its own project
 
-        $test = new StdClass();
-        $test->status = 'draft';
+//        $test = new StdClass();
+//        $test->status = 'draft';
 
-        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
+//        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
 //        dump(\Iconic\Tool\UniProperty::get($test, 'nothing'));
-        \Iconic\Tool\UniProperty::set($test, 'status', 'published');
-        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
+//        \Iconic\Tool\UniProperty::set($test, 'status', 'published');
+//        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
 //        \Iconic\Tool\UniProperty::set($test, 'test', 'published');
     }
 

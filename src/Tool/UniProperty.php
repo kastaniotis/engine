@@ -43,4 +43,11 @@ class UniProperty
         $class = get_class($subject);
         throw new \Exception("The property '$propertyName' does not exist on '$class'.");
     }
+
+    public static function check(object $object, string $propertyName)
+    {
+        $method = 'get'.ucfirst($propertyName);
+
+        return property_exists($object, $propertyName) || method_exists($object, $method);
+    }
 }

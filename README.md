@@ -16,7 +16,7 @@ composer require iconic/engine
 ##Quick Guide
 
 All you have to do is create an instance of Engine and 
-start defining and checking allowed actions.
+start defining and checking allowed actions on properties and from actors (supports getters/setters and public properties).
 
 - Allow everyone to view
 ```php
@@ -28,7 +28,6 @@ $allowed = $engine->can('edit'); //returns false
 
 - Allow publishing of posts only if their status is draft 
 
-(currently supports checking only public properties)
 ```php
 $post = new Post();
 $post->status = "submitted";
@@ -46,7 +45,6 @@ $engine->apply('publish', $post); //changes post status to "published"
 
 - Allow only actors with "role" "editor" to edit, without defining object restrictions 
 
-(currently supports checking only public properties)
 ```php
 $user = new User();
 $user->role = "user";
@@ -59,7 +57,6 @@ $allowed = $engine->can('edit', null, $user); //returns false
 - Combine the two above scenarios. Allow posts with "status" "draft"
 to be "published" by actors with "role" "editor"
 
- (currently supports checking only public properties)
 ```php
 $editor = new User();
 $editor->role = 'editor';

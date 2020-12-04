@@ -93,11 +93,11 @@ class Engine
             $actorParameter = $action->gate->name;
             $expected = $action->gate->value;
 
-            if (!property_exists($actor, $actorParameter)) {
+            if (!UniProperty::check($actor, $actorParameter)) {
                 throw new ActorParameterRequiredException($actionName, $actorParameter);
             }
 
-            $actorParameterValue = $actor->$actorParameter;
+            $actorParameterValue = UniProperty::get($actor, $actorParameter);
 
             if ($actorParameterValue !== $expected) {
                 throw new ActorParameterValueRequiredException($actionName, $actorParameter, $actorParameterValue, $expected);
