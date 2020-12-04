@@ -11,6 +11,7 @@ use Iconic\Engine\Exception\ActorRequiredException;
 use Iconic\Engine\Exception\ObjectParameterRequiredException;
 use Iconic\Engine\Exception\ObjectParameterValueRequiredException;
 use Iconic\Engine\Exception\ObjectRequiredException;
+use Iconic\Engine\Exception\WorkflowException;
 
 class Engine
 {
@@ -36,6 +37,33 @@ class Engine
     }
 
     public function can(string $actionName, $object = null, $actor = null)
+    {
+        try {
+            $this->check($actionName, $object, $actor);
+            return true;
+        }
+        catch (WorkflowException $exception){
+            return false;
+        }
+    }
+
+    public function apply(string $name, $object = null, $actor = null)
+    {
+        $this->check($name, $object, $actor);
+
+        if(null === $object){
+            throw new ObjectRequiredException($name);
+        }
+
+        /** @var Action $action */
+        $action = $this->actions[$name];
+        $subject = $action->transition->subject;
+        $value = $action->transition->final;
+
+        $object->$subject = $value;
+    }
+
+    private function check(string $actionName, $object = null, $actor = null)
     {
         if(! key_exists($actionName, $this->actions)){
             throw new ActionException($actionName);
@@ -83,23 +111,5 @@ class Engine
                 throw new ActorParameterValueRequiredException($actionName, $actorParameter, $actorParameterValue, $expected);
             }
         }
-
-        return true;
-    }
-
-    public function apply(string $name, $object = null, $actor = null)
-    {
-        $this->can($name, $object, $actor);
-
-        if(null === $object){
-            throw new ObjectRequiredException($name);
-        }
-
-        /** @var Action $action */
-        $action = $this->actions[$name];
-        $subject = $action->transition->subject;
-        $value = $action->transition->final;
-
-        $object->$subject = $value;
     }
 }
