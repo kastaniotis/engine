@@ -3,6 +3,7 @@
 use Behat\Behat\Context\Context;
 use Iconic\Engine\Exception\WorkflowException;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 
 /**
@@ -22,55 +23,6 @@ class FeatureContext implements Context
     public function __construct()
     {
         $this->engine = new Iconic\Engine\Engine();
-    }
-
-    /**
-     * @Given /^test$/
-     */
-    public function test()
-    {
-
-    }
-
-    /**
-     * @Then /^run$/
-     */
-    public function run()
-    {
-        //Done
-        $engine = new Iconic\Engine\Engine();
-
-        $engine->allow('view'); //Action
-
-        //Pending
-        $engine->allow('publish')->of('status', 'draft', 'published');
-        $engine->allow('publish')->if('role', 'admin');
-
-        $engine->allow('unpublish')->of('status', 'published', 'unpublished');
-        $engine->allow('unpublish')->if('role', 'publisher');
-
-//        dump($engine->getActions());
-
-        $engine->can('view');
-//        $engine->can('view2');
-//        $engine->can('publish'); //not allowed without an object
-//        $engine->can('publish', new StdClass()); //not allowed without the parameter
-        $post = new StdClass();
-//        $post->status = 'wrong'; //not allowed with a wrong parameter
-        $post->status = 'draft';
-//        $engine->can('publish',$post); //allowed with object and parameter
-
-
-        $actor = new StdClass();
-//        $actor->role = 'wrong';
-        $actor->role = 'admin';
-        $engine->can('publish', $post, $actor);
-
-//        dump($post);
-
-        $engine->apply('publish', $post, $actor);
-
-//        dump($post);
     }
 
     /**
@@ -94,7 +46,7 @@ class FeatureContext implements Context
      */
     public function theApplicationCanExecuteTheAction($action)
     {
-        $this->engine->can($action);
+        assertTrue($this->engine->can($action));
     }
 
     /**
@@ -109,22 +61,12 @@ class FeatureContext implements Context
         }
     }
 
-
-    public function anActionIsAllowed($arg1)
-    {
-        throw new \Behat\Behat\Tester\Exception\PendingException();
-    }
-
     /**
      * @Given /^the application is not allowed the "([^"]*)" action$/
      */
     public function theApplicationCannotExecuteActions($action)
     {
-        try {
-            $this->engine->can($action);
-        } catch (WorkflowException $exception) {
-            assertEquals("Action '$action' is not allowed", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action));
     }
 
     /**
@@ -133,7 +75,7 @@ class FeatureContext implements Context
     public function theApplicationCannotApplyActions($action)
     {
         try {
-            $this->engine->can($action);
+            $this->engine->apply($action);
         } catch (WorkflowException $exception) {
             assertEquals("Action '$action' is not allowed", $exception->getMessage());
         }
@@ -152,12 +94,7 @@ class FeatureContext implements Context
      */
     public function theApplicationIsNotAllowedTheActionWithoutAnObject($action)
     {
-        try {
-            $this->engine->can($action);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("Action '$action' allows transitions only for specific objects. No objects are specified.", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action));
     }
 
     /**
@@ -166,12 +103,8 @@ class FeatureContext implements Context
     public function theApplicationIsNotAllowedTheActionWithoutAnObjectThatHasTheDefinedParameter($action, $parameter)
     {
         $object = new StdClass();
-        try {
-            $this->engine->can($action, $object);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("The transition can only be applied to objects with a defined '$parameter'.", $exception->getMessage());
-        }
+
+        assertFalse($this->engine->can($action, $object));
     }
 
     /**
@@ -181,12 +114,7 @@ class FeatureContext implements Context
     {
         $object = new StdClass();
         $object->$parameter = $value;
-        try {
-            $this->engine->can($action, $object);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("The transition '$action' cannot be applied for objects with a '$parameter' '$value'. Expected: '$parameter' is 'draft'", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action, $object));
     }
 
     /**
@@ -196,7 +124,7 @@ class FeatureContext implements Context
     {
         $object = new StdClass();
         $object->$parameter = $value;
-        $this->engine->can($action, $object);
+        assertTrue($this->engine->can($action, $object));
     }
 
     /**
@@ -225,12 +153,7 @@ class FeatureContext implements Context
     {
         $object = new StdClass();
         $object->status = "draft";
-        try {
-            $this->engine->can($action, $object);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("Only specific actors are allowed action $action", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action, $object));
     }
 
     /**
@@ -241,12 +164,7 @@ class FeatureContext implements Context
         $object = new StdClass();
         $object->status = "draft";
         $actor = new StdClass();
-        try {
-            $this->engine->can($action, $object, $actor);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("The action '$action' can only be applied by actors with a defined '$parameter'.", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action, $object, $actor));
     }
 
     /**
@@ -258,12 +176,7 @@ class FeatureContext implements Context
         $object->status = "draft";
         $actor = new StdClass();
         $actor->$parameter = "wrong";
-        try {
-            $this->engine->can($action, $object, $actor);
-        }
-        catch (WorkflowException $exception){
-            assertEquals("The action '$action' cannot be applied by '$parameter': 'wrong'. Expected: '$value'", $exception->getMessage());
-        }
+        assertFalse($this->engine->can($action, $object, $actor));
     }
 
     /**
@@ -275,7 +188,7 @@ class FeatureContext implements Context
         $object->status = "draft";
         $actor = new StdClass();
         $actor->$parameter = $value;
-        $this->engine->can($action, $object, $actor);
+        assertTrue($this->engine->can($action, $object, $actor));
     }
 
     /**
@@ -305,7 +218,7 @@ class FeatureContext implements Context
     {
         $actor = new StdClass();
         $actor->$parameter = $value;
-        $this->engine->can($action, null, $actor);
+        assertTrue($this->engine->can($action, null, $actor));
     }
 
     /**
@@ -317,8 +230,7 @@ class FeatureContext implements Context
         $actor->$parameter = $value;
         try {
             $this->engine->apply($action, null, $actor);
-        }
-        catch (WorkflowException $exception){
+        } catch (WorkflowException $exception) {
             assertEquals("Action '$action' allows transitions only for specific objects. No objects are specified.", $exception->getMessage());
         }
     }

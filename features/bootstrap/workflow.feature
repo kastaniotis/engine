@@ -36,7 +36,3 @@ Feature: Workflow
     And the application cannot apply the "publish" action with an actor with the "role" "publisher" and without an object
 
     ## TODO: Empty final on transition, to allow only check action on initial value, without applying. Defined on cms -> all view if published
-
-  Scenario: Dummy
-    Given test
-    Then run
