@@ -2,6 +2,7 @@
     "name": "iconic/engine",
     "description": "Engine is a workflow state machine that helps keeping business logic centralized",
     "license": "MIT",
+    "minimum-stability": "stable",
     "type": "library",
     "require": {
         "php": ">=7.4",
