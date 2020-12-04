@@ -4,8 +4,55 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5481b81819c8c31e2199e3278173ea5d",
-    "packages": [],
+    "content-hash": "a2f255c79e2806435fd7990248bfe2d2",
+    "packages": [
+        {
+            "name": "iconic/uniproperty",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iconicgr/uniproperty.git",
+                "reference": "4e871136e12103f62d937be83cf143e8f7dc96ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iconicgr/uniproperty/zipball/4e871136e12103f62d937be83cf143e8f7dc96ff",
+                "reference": "4e871136e12103f62d937be83cf143e8f7dc96ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "behat/behat": "^3.8",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^9.5",
+                "symfony/var-dumper": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Iconic\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dimitris Kastaniotis",
+                    "email": "d.kastaniotis@iconic.gr"
+                }
+            ],
+            "description": "A small helper library that helps when you have to access properties of unknown objects by name. It supports both public properties and getter/setter methods.",
+            "support": {
+                "issues": "https://github.com/iconicgr/uniproperty/issues",
+                "source": "https://github.com/iconicgr/uniproperty/tree/v0.1.1"
+            },
+            "time": "2020-12-04T21:16:35+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "behat/behat",

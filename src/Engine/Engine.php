@@ -9,7 +9,8 @@ use Iconic\Engine\Exception\ActorRequiredException;
 use Iconic\Engine\Exception\ObjectParameterValueRequiredException;
 use Iconic\Engine\Exception\ObjectRequiredException;
 use Iconic\Engine\Exception\WorkflowException;
-use Iconic\Tool\UniProperty;
+use Iconic\Uniproperty\Exception\PropertyException;
+use Iconic\Uniproperty\Uniproperty;
 
 class Engine
 {
@@ -40,7 +41,7 @@ class Engine
             $this->check($actionName, $object, $actor);
 
             return true;
-        } catch (WorkflowException $exception) {
+        } catch (WorkflowException | PropertyException $exception) {
             return false;
         }
     }
@@ -105,6 +106,5 @@ class Engine
         }
     }
 
-    //TODO: Allow accessing properties using getters. And add some tests.
     //TODO: Move Uniproperty to its own project
 }

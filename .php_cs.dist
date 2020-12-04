@@ -1,8 +1,6 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    //->exclude('somedir')
-    //->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/features/bootstrap')
 ;
@@ -10,8 +8,6 @@ $finder = PhpCsFixer\Finder::create()
 return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
-        //'strict_param' => true,
-        //'array_syntax' => ['syntax' => 'short'],
     ])
     ->setFinder($finder)
 ;

@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Iconic\Engine\Exception\WorkflowException;
+use Iconic\Uniproperty\Uniproperty;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
@@ -270,9 +271,9 @@ class FeatureContext implements Context
     public function shouldBeAbleToChangeTheFromToIfItAppliesTheAction($parameter, $from, $to, $action)
     {
         $post = new \Iconic\Engine\Test\Post($from);
-        assertEquals($from, \Iconic\Tool\UniProperty::get($post, $parameter));
+        assertEquals($from, UniProperty::get($post, $parameter));
 
         $this->engine->apply($action, $post);
-        assertEquals($to, \Iconic\Tool\UniProperty::get($post, $parameter));
+        assertEquals($to, UniProperty::get($post, $parameter));
     }
 }

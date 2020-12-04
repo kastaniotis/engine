@@ -4,7 +4,8 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "iconic/uniproperty": "^0.1"
     },
     "require-dev": {
         "behat/behat": "^3.8",
