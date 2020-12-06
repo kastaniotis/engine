@@ -26,6 +26,17 @@ class Engine
         return $this->actions;
     }
 
+    //TODO: Need test for this
+    public function getAvailableActions($object = null, $actor = null)
+    {
+        $result = [];
+        foreach ($this->actions as $name => $action) {
+            $result[$name] = $this->can($name, $object, $actor);
+        }
+
+        return $result;
+    }
+
     public function allow(string $action)
     {
         if (!key_exists($action, $this->actions)) {
@@ -105,6 +116,4 @@ class Engine
             }
         }
     }
-
-    //TODO: Move Uniproperty to its own project
 }
