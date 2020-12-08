@@ -8,7 +8,7 @@ class Transition
     public $initial;
     public $final;
 
-    public function __construct(string $subject, string $initial, string $final)
+    public function __construct(string $subject, $initial, $final)
     {
         $this->subject = $subject;
         $this->initial = $initial;

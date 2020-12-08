@@ -13,6 +13,7 @@ use function PHPUnit\Framework\assertTrue;
 class FeatureContext implements Context
 {
     private $engine;
+    private $publishable;
 
     /**
      * Initializes context.
@@ -234,17 +235,6 @@ class FeatureContext implements Context
         } catch (WorkflowException $exception) {
             assertEquals("Action '$action' allows transitions only for specific objects. No objects are specified.", $exception->getMessage());
         }
-
-        //TODO: Move this into its own project
-
-//        $test = new StdClass();
-//        $test->status = 'draft';
-
-//        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
-//        dump(\Iconic\Tool\UniProperty::get($test, 'nothing'));
-//        \Iconic\Tool\UniProperty::set($test, 'status', 'published');
-//        dump(\Iconic\Tool\UniProperty::get($test, 'status'));
-//        \Iconic\Tool\UniProperty::set($test, 'test', 'published');
     }
 
     /**

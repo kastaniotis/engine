@@ -13,7 +13,7 @@ class Action
         $this->name = $name;
     }
 
-    public function of(string $subject, string $initial, string $final)
+    public function of(string $subject, $initial, $final)
     {
         $this->transition = new Transition($subject, $initial, $final);
 
