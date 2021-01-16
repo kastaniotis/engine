@@ -36,7 +36,7 @@ $engine = new \Iconic\Engine\Engine();
 $engine->allow('publish')->of('status', 'draft', 'published');
 
 $allowed = $engine->can('publish', $post); //returns false
-$engine->apply('publish, $post'); //throws Exception
+$engine->apply('publish', $post); //throws Exception
 
 $post->status = "draft";
 $allowed = $engine->can('publish', $post); //returns true
