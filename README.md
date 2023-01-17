@@ -5,7 +5,7 @@ significantly simpler to use, and allow extra checks
 about both the actor and the object of the workflow 
 transitions and actions.
 
-##Installation
+## Installation
 
 You can install the library using composer
 
@@ -13,7 +13,7 @@ You can install the library using composer
 composer require iconic/engine
 ```
 
-##Quick Guide
+## Quick Guide
 
 All you have to do is create an instance of Engine and 
 start defining and checking allowed actions on properties and from actors (supports getters/setters and public properties).
