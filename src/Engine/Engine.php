@@ -12,6 +12,8 @@ use Iconic\Engine\Exception\WorkflowException;
 use Iconic\Uniproperty\Exception\PropertyException;
 use Iconic\Uniproperty\Uniproperty;
 
+//TODO: Move to using Results instead of Exceptions
+
 class Engine
 {
     public function __construct()
